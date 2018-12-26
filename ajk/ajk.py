@@ -8,7 +8,7 @@ headers = {
            }
 
 def start():
-    for i in range(41, 100):
+    for i in range(0, 100):
         ajk_url = "https://tianjin.anjuke.com/sale/p" + str(i)
         response = requests.get(url=ajk_url, headers=headers)
         selector = Selector(text=response.text)
