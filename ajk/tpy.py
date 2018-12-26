@@ -1,7 +1,7 @@
 import requests
 from scrapy.selector import Selector
 import time
-import csv
+import csvUtils
 
 headers = {
            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
@@ -29,13 +29,7 @@ def getMessage(url):
     phone = getPhoneNumber(response)
     if len(phone) == 11:
         print("姓名:" + sale + "\n手机号:" + phone + "\n公司名:" + company + "\n门店名:" + store)
-        saveMessage([sale, phone, company, store])
-
-# 保存信息
-def saveMessage(info):
-    with open('上海太平洋房销售信息.csv', 'a+', newline="") as csvfile:
-        writer = csv.writer(csvfile, dialect=("excel"))
-        writer.writerow(info)
+        csvUtils.saveMsg("上海太平洋房产", [sale, phone, company, store])
 
 # 获取销售名
 def getSalesName(selector):

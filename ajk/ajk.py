@@ -1,10 +1,11 @@
 import requests
 from scrapy.selector import Selector
 import time
-import csv
+import csvUtils
 
 headers = {
-           "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+           "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+            "cookie": "",
            }
 
 def start():
@@ -21,7 +22,6 @@ def start():
 
 # 获取信息
 def getMessage(url):
-    headers["cookie"] = ""
     response = requests.get(url=url, headers=headers)
     selector = Selector(text=response.text)
     sales = getSalesName(selector)
@@ -29,14 +29,7 @@ def getMessage(url):
     company = getCompanyName(selector)
     store = getStoreName(selector)
     print("姓名:" + sales + "\n手机号:" + phone + "\n公司名:" + company + "\n门店名:" + store)
-    saveMessage([sales, phone, company, store])
-
-
-# 保存信息
-def saveMessage(info):
-    with open('天津安居客销售信息.csv', 'a+', newline="") as csvfile:
-        writer = csv.writer(csvfile, dialect=("excel"))
-        writer.writerow(info)
+    csvUtils.saveMsg("安居客", [sales, phone, company, store])
 
 
 # 获取销售名
